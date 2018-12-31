@@ -681,6 +681,18 @@ enum WindowClass {
 	 */
 	WC_SAVE_PRESET,
 
+	/**
+	 * Terminal view; %Window numbers:
+	 *   - #TileIndex = #TerminalWidgets
+	*/
+	WC_TERMINAL_VIEW,
+
+	/**
+	 * Airport Control Window; %Window numbers:
+	 *   - #StationID = #AirportControlWidgets
+	*/
+	WC_AIRPORT_CONTROL,
+
 	WC_INVALID = 0xFFFF, ///< Invalid window.
 };
 

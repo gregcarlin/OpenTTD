@@ -576,6 +576,11 @@ private:
 			}
 		}
 
+		// Reserve the COLOUR_GREY for OWNER_TOWN
+		if (widget == WID_SCL_PRI_COL_DROPDOWN) {
+			SetBit(used_colours, COLOUR_GREY);
+		}
+
 		/* Get the first selected livery to use as the default dropdown item */
 		for (scheme = LS_BEGIN; scheme < LS_END; scheme++) {
 			if (HasBit(this->sel, scheme)) break;

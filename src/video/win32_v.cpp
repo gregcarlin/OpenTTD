@@ -870,7 +870,8 @@ static LRESULT CALLBACK WndProcGdi(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 					return 0;
 
 				case VK_MENU: // Just ALT
-					return 0; // do nothing
+					HandleKeypress(MapWindowsKey(wParam), 0);
+					return 0; // We now want Alt to pass to switch to alternate highlight mode.
 
 				case VK_F10: // F10, ignore activation of menu
 					HandleKeypress(MapWindowsKey(wParam), 0);
@@ -879,6 +880,14 @@ static LRESULT CALLBACK WndProcGdi(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 				default: // ALT in combination with something else
 					HandleKeypress(MapWindowsKey(wParam), 0);
 					break;
+			}
+			break;
+
+		case WM_SYSKEYUP: // user releases a system key (F10 or alt)
+			switch (wParam) {
+				case VK_MENU: // Just ALT
+					HandleKeyrelease(WKC_ALT, 0);  //MapWindowsKey does not work...  Probably because it is released.
+					return 0; // Pass Alt so that a release will set it back to normal Highlight mode.
 			}
 			break;
 
@@ -1248,6 +1257,7 @@ void VideoDriver_Win32::MainLoop()
 
 			_ctrl_pressed = _wnd.has_focus && GetAsyncKeyState(VK_CONTROL)<0;
 			_shift_pressed = _wnd.has_focus && GetAsyncKeyState(VK_SHIFT)<0;
+			_alt_pressed = _wnd.has_focus && GetAsyncKeyState(VK_MENU)<0;
 
 			/* determine which directional keys are down */
 			if (_wnd.has_focus) {

@@ -382,6 +382,8 @@ struct CheatWindow : Window {
 		this->SetTimeout();
 
 		this->SetDirty();
+		InvalidateWindowClassesData(WC_TERMINAL_VIEW);
+		DeleteWindowByClass(WC_AIRPORT_CONTROL);
 	}
 
 	virtual void OnTimeout()

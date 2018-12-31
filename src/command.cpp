@@ -198,6 +198,9 @@ CommandProc CmdAutofillTimetable;
 CommandProc CmdSetTimetableStart;
 
 CommandProc CmdOpenCloseAirport;
+CommandProc CmdTerminalChangeOwner;
+CommandProc CmdTerminalChangeFullLoad;
+CommandProc CmdResetAirport;
 
 #define DEF_CMD(proc, flags, type) {proc, #proc, (CommandFlags)flags, type}
 
@@ -235,7 +238,7 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdBuildRoad,    CMD_DEITY | CMD_NO_WATER | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_ROAD
 	DEF_CMD(CmdBuildRoadDepot,           CMD_NO_WATER | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_ROAD_DEPOT
 
-	DEF_CMD(CmdBuildAirport,             CMD_NO_WATER | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_AIRPORT
+	DEF_CMD(CmdBuildAirport,CMD_NO_TEST | CMD_NO_WATER | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_AIRPORT; test run might clear tiles multiple times, in execution that only happens once
 	DEF_CMD(CmdBuildDock,                               CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_DOCK
 	DEF_CMD(CmdBuildShipDepot,                          CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_SHIP_DEPOT
 	DEF_CMD(CmdBuildBuoy,                               CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_BUOY
@@ -325,7 +328,7 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdRemoveStoryPageElement,                 CMD_DEITY, CMDT_OTHER_MANAGEMENT      ), // CMD_REMOVE_STORY_ELEMENT_PAGE
 	DEF_CMD(CmdScrollViewport,                         CMD_DEITY, CMDT_OTHER_MANAGEMENT      ), // CMD_SCROLL_VIEWPORT
 
-	DEF_CMD(CmdLevelLand, CMD_ALL_TILES | CMD_NO_TEST | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_LEVEL_LAND; test run might clear tiles multiple times, in execution that only happens once
+	DEF_CMD(CmdLevelLand, CMD_ALL_TILES | CMD_NO_TEST | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION),	// CMD_LEVEL_LAND; test run might clear tiles multiple times, in execution that only happens once
 
 	DEF_CMD(CmdBuildLock,                               CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_LOCK
 
@@ -356,6 +359,9 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdSetTimetableStart,                              0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SET_TIMETABLE_START
 
 	DEF_CMD(CmdOpenCloseAirport,                               0, CMDT_ROUTE_MANAGEMENT      ), // CMD_OPEN_CLOSE_AIRPORT
+	DEF_CMD(CmdTerminalChangeOwner,							   0, CMDT_OTHER_MANAGEMENT      ), // CMD_TERMINAL_CHANGE_OWNER
+	DEF_CMD(CmdTerminalChangeFullLoad,						   0, CMDT_OTHER_MANAGEMENT      ), // CMD_TERMINAL_CHANGE_FULLLOAD
+	DEF_CMD(CmdResetAirport,								   0, CMDT_ROUTE_MANAGEMENT		 ), // CMD_RESET_AIRPORT
 };
 
 /*!

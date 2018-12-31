@@ -10,6 +10,7 @@
     <ProjectName>strgen</ProjectName>
     <ProjectGuid>{A133A442-BD0A-4ADE-B117-AD7545E4BDD1}</ProjectGuid>
     <RootNamespace>strgen</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

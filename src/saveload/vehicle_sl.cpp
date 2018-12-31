@@ -169,7 +169,8 @@ void UpdateOldAircraft()
 	/* set airport_flags to 0 for all airports just to be sure */
 	Station *st;
 	FOR_ALL_STATIONS(st) {
-		st->airport.flags = 0; // reset airport
+		st->airport.flags1 = 0; // reset airport
+		st->airport.flags2 = 0; // reset airport
 	}
 
 	Aircraft *a;
@@ -366,6 +367,28 @@ void AfterLoadVehicles(bool part_of_load)
 
 				v->SetServiceIntervalIsCustom(v->GetServiceInterval() != interval);
 				v->SetServiceIntervalIsPercent(c->settings.vehicle.servint_ispercent);
+			}
+		}
+
+		/* Airport state engine has changed dramatically.  Any airplane at an airport is thrown into the air. */
+		if (IsSavegameVersionBefore(195)) {
+			Station * st;
+			FOR_ALL_STATIONS(st) {
+				if (!(st->facilities & FACIL_AIRPORT)) continue;
+				st->airport.flags1 = 0;
+				st->airport.flags2 = 0;
+				st->airport.fullload = 0;
+			}
+
+			Aircraft * v;
+			FOR_ALL_AIRCRAFT(v) {
+				if (!v->IsNormalAircraft()) continue;
+				v->state = FLYING;
+				v->airport_flags1 = 0;
+				v->airport_flags2 = 0;
+				//v->current_order.MakeLoading(false);
+				UpdateAircraftCache(v);
+				AircraftNextAirportPos_and_Order(v);
 			}
 		}
 	}
@@ -777,6 +800,8 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 
 		 SLE_CONDVAR(Aircraft, turn_counter,          SLE_UINT8,                  136, SL_MAX_VERSION),
 		 SLE_CONDVAR(Aircraft, flags,                 SLE_UINT8,                  167, SL_MAX_VERSION),
+		 SLE_CONDVAR(Aircraft, airport_flags1,        SLE_UINT64,                 199, SL_MAX_VERSION),
+		 SLE_CONDVAR(Aircraft, airport_flags2,        SLE_UINT64,                 199, SL_MAX_VERSION),
 
 		SLE_CONDNULL(13,                                                           2, 143), // old reserved space
 

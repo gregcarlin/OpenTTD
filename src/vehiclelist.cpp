@@ -13,6 +13,7 @@
 #include "train.h"
 #include "vehiclelist.h"
 #include "group.h"
+#include "company_func.h"
 
 #include "safeguards.h"
 
@@ -91,6 +92,13 @@ void BuildDepotVehicleList(VehicleType type, TileIndex tile, VehicleList *engine
 				break;
 			}
 
+			// Now that multiple owners planes can be in the same depot, need to check ownership now.
+			case VEH_AIRCRAFT:
+				if (!(v->owner == _local_company))
+					continue;
+				if (!v->IsInDepot()) continue;
+				break;
+
 			default:
 				if (!v->IsInDepot()) continue;
 				break;
@@ -128,7 +136,8 @@ bool GenerateVehicleSortList(VehicleList *list, const VehicleListIdentifier &vli
 					FOR_VEHICLE_ORDERS(v, order) {
 						if ((order->IsType(OT_GOTO_STATION) || order->IsType(OT_GOTO_WAYPOINT) || order->IsType(OT_IMPLICIT))
 								&& order->GetDestination() == vli.index) {
-							*list->Append() = v;
+							if (vli.company == v->owner)
+								*list->Append() = v;
 							break;
 						}
 					}
@@ -173,7 +182,8 @@ bool GenerateVehicleSortList(VehicleList *list, const VehicleListIdentifier &vli
 
 					FOR_VEHICLE_ORDERS(v, order) {
 						if (order->IsType(OT_GOTO_DEPOT) && !(order->GetDepotActionType() & ODATFB_NEAREST_DEPOT) && order->GetDestination() == vli.index) {
-							*list->Append() = v;
+							if (vli.company == v->owner)
+								*list->Append() = v;
 							break;
 						}
 					}

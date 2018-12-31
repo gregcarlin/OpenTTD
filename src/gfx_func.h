@@ -56,6 +56,7 @@ extern byte _support8bpp;
 extern CursorVars _cursor;
 extern bool _ctrl_pressed;   ///< Is Ctrl pressed?
 extern bool _shift_pressed;  ///< Is Shift pressed?
+extern bool _alt_pressed;	 ///< Is Alt pressed?
 extern byte _fast_forward;
 
 extern bool _left_button_down;
@@ -72,6 +73,7 @@ extern Dimension _cur_resolution;
 extern Palette _cur_palette; ///< Current palette
 
 void HandleKeypress(uint keycode, WChar key);
+void HandleKeyrelease(uint keycode, WChar key);
 void HandleTextInput(const char *str, bool marked = false, const char *caret = NULL, const char *insert_location = NULL, const char *replacement_end = NULL);
 void HandleCtrlChanged();
 void HandleMouseEvents();

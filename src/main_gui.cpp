@@ -439,6 +439,14 @@ struct MainWindow : Window
 
 	virtual void OnMouseWheel(int wheel)
 	{
+		if (_alt_pressed) {
+			Window * w = FindWindowById(WC_BUILD_STATION, TRANSPORT_AIR);
+			if (w != NULL) {
+				w->OnMouseWheel(wheel);
+				return;
+			}
+		}
+
 		if (_settings_client.gui.scrollwheel_scrolling == 0) {
 			ZoomInOrOutToCursorWindow(wheel < 0, this);
 		}

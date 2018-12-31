@@ -70,6 +70,7 @@
 #include "../../widgets/waypoint_widget.h"
 #include "../../widgets/link_graph_legend_widget.h"
 #include "../../widgets/story_widget.h"
+#include "../../widgets/terminal_widget.h"
 
 /**
  * Class that handles window interaction. A Window in OpenTTD has two imporant
@@ -763,6 +764,12 @@ public:
 		 *   - 0 = #SavePresetWidgets
 		 */
 		WC_SAVE_PRESET                               = ::WC_SAVE_PRESET,
+
+		/**
+		 * Terminal view; %Window numbers:
+		 *   - #TileIndex = #TerminalWidgets
+		*/
+		WC_TERMINAL_VIEW							 = ::WC_TERMINAL_VIEW,
 
 		WC_INVALID                                   = ::WC_INVALID,                                   ///< Invalid window.
 	};
@@ -2599,6 +2606,15 @@ public:
 		WID_W_CENTER_VIEW                            = ::WID_W_CENTER_VIEW,                            ///< Center the main view on this waypoint.
 		WID_W_RENAME                                 = ::WID_W_RENAME,                                 ///< Rename this waypoint.
 		WID_W_SHOW_VEHICLES                          = ::WID_W_SHOW_VEHICLES,                          ///< Show the vehicles visiting this waypoint.
+	};
+
+	/* automatically generated from ../../widgets/terminal_widget.h */
+	/** Widgets of the #TerminalWindow class. */
+	enum TerminalWidgets {
+		WID_T_CAPTION = ::WID_T_CAPTION,                                ///< Caption of window.
+		WID_T_VIEWPORT = ::WID_T_VIEWPORT,                               ///< The viewport on this terminal.
+		WID_T_CENTER_VIEW = ::WID_T_CENTER_VIEW,                            ///< Center the main view on this terminal.
+		WID_T_FULLLOAD = ::WID_T_FULLLOAD,						       ///< Full Load Button
 	};
 
 	// @endenum

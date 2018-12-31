@@ -363,14 +363,29 @@ static Order GetOrderCmdFromTile(const Vehicle *v, TileIndex tile)
 	order.index = 0;
 
 	/* check depot first */
-	if (IsDepotTypeTile(tile, (TransportType)(uint)v->type) && IsTileOwner(tile, _local_company)) {
-		order.MakeGoToDepot(v->type == VEH_AIRCRAFT ? GetStationIndex(tile) : GetDepotIndex(tile),
-				ODTFB_PART_OF_ORDERS,
+	if (v->type == VEH_AIRCRAFT) {
+		if (!IsTileType(tile, MP_STATION))
+			 return order;
+		StationID st_index = GetStationIndex(tile);
+		Station * st = Station::Get(st_index);
+		if (IsDepotTypeTile(tile, (TransportType)(uint)v->type) && (st->airport.GetTerminalOwner(_local_company) || IsTileOwner(tile, _local_company))) {
+			order.MakeGoToDepot(GetStationIndex(tile), ODTFB_PART_OF_ORDERS,
 				(_settings_client.gui.new_nonstop && v->IsGroundVehicle()) ? ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS : ONSF_STOP_EVERYWHERE);
 
-		if (_ctrl_pressed) order.SetDepotOrderType((OrderDepotTypeFlags)(order.GetDepotOrderType() ^ ODTFB_SERVICE));
+			if (_ctrl_pressed) order.SetDepotOrderType((OrderDepotTypeFlags)(order.GetDepotOrderType() ^ ODTFB_SERVICE));
 
-		return order;
+			return order;
+		}
+
+	} else {
+		if (IsDepotTypeTile(tile, (TransportType)(uint)v->type) && IsTileOwner(tile, _local_company)) {
+			order.MakeGoToDepot(GetDepotIndex(tile), ODTFB_PART_OF_ORDERS,
+				(_settings_client.gui.new_nonstop && v->IsGroundVehicle()) ? ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS : ONSF_STOP_EVERYWHERE);
+			
+			if (_ctrl_pressed) order.SetDepotOrderType((OrderDepotTypeFlags)(order.GetDepotOrderType() ^ ODTFB_SERVICE));
+			
+			return order;
+		}
 	}
 
 	/* check rail waypoint */
@@ -390,9 +405,9 @@ static Order GetOrderCmdFromTile(const Vehicle *v, TileIndex tile)
 
 	if (IsTileType(tile, MP_STATION)) {
 		StationID st_index = GetStationIndex(tile);
-		const Station *st = Station::Get(st_index);
+		Station * st = Station::Get(st_index);
 
-		if (st->owner == _local_company || st->owner == OWNER_NONE) {
+		if (st->owner == _local_company || st->owner == OWNER_NONE || st->airport.GetTerminalOwner(_local_company)) {
 			byte facil;
 			(facil = FACIL_DOCK, v->type == VEH_SHIP) ||
 			(facil = FACIL_TRAIN, v->type == VEH_TRAIN) ||
