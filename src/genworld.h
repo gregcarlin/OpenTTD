@@ -19,6 +19,7 @@ enum LandscapeGenerator {
 	 * Otherwise you will get inconsistent behaviour. */
 	LG_ORIGINAL     = 0,  ///< The original landscape generator
 	LG_TERRAGENESIS = 1,  ///< TerraGenesis Perlin landscape generator
+	LG_CONTINENTS   = 2,  ///< Continents landscape generator
 };
 
 static const uint32 GENERATE_NEW_SEED = UINT32_MAX; ///< Create a new random seed

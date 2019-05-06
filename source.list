@@ -87,6 +87,7 @@ story.cpp
 subsidy.cpp
 textbuf.cpp
 texteff.cpp
+tgc.cpp
 tgp.cpp
 tile_map.cpp
 tilearea.cpp
@@ -362,6 +363,7 @@ textbuf_type.h
 texteff.hpp
 textfile_gui.h
 textfile_type.h
+tgc.h
 tgp.h
 tile_cmd.h
 tile_type.h

@@ -18,6 +18,7 @@
 #include "landscape.h"
 #include "void_map.h"
 #include "tgp.h"
+#include "tgc.h"
 #include "genworld.h"
 #include "fios.h"
 #include "date_func.h"
@@ -1296,6 +1297,7 @@ void GenerateLandscape(byte mode)
 	enum GenLandscapeSteps {
 		GLS_HEIGHTMAP    =  3, ///< Loading a heightmap
 		GLS_TERRAGENESIS =  5, ///< Terragenesis generator
+		GLS_CONTINENTS   =  4, ///< Continents generator
 		GLS_ORIGINAL     =  2, ///< Original generator
 		GLS_TROPIC       = 12, ///< Extra steps needed for tropic landscape
 		GLS_OTHER        =  0, ///< Extra steps for other landscapes
@@ -1309,6 +1311,9 @@ void GenerateLandscape(byte mode)
 	} else if (_settings_game.game_creation.land_generator == LG_TERRAGENESIS) {
 		SetGeneratingWorldProgress(GWP_LANDSCAPE, steps + GLS_TERRAGENESIS);
 		GenerateTerrainPerlin();
+	} else if (_settings_game.game_creation.land_generator == LG_CONTINENTS) {
+		SetGeneratingWorldProgress(GWP_LANDSCAPE, steps + GLS_CONTINENTS + 1);
+		GenerateTerrainContinents();
 	} else {
 		SetGeneratingWorldProgress(GWP_LANDSCAPE, steps + GLS_ORIGINAL);
 		if (_settings_game.construction.freeform_edges) {
